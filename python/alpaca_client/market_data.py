@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from .client import AlpacaClient
 from .models import Bar, Trade, Quote, Snapshot
+from .exceptions import APIError
 
 
 class MarketDataAPI:
@@ -455,23 +456,37 @@ class MarketDataAPI:
         
         params = {"symbols": ",".join(symbols)}
         data = self._crypto_request("GET", "/snapshots", params=params)
-        
+
+        # Alpaca's current response is symbol-keyed. Keep accepting the
+        # wrapped shape used by older proxies and recorded responses.
+        snapshot_data = data.get("snapshots", data) if isinstance(data, dict) else {}
         return {
             symbol: Snapshot.from_dict(symbol, snap_data)
-            for symbol, snap_data in data.get("snapshots", {}).items()
+            for symbol, snap_data in snapshot_data.items()
         }
     
     def get_crypto_snapshot(self, symbol: str) -> Snapshot:
         """Get latest snapshot for a single crypto pair."""
-        snapshots = self.get_crypto_snapshots([symbol])
-        if symbol in snapshots:
-            return snapshots[symbol]
+        normalized_symbol = symbol.upper()
+        snapshots = self.get_crypto_snapshots([normalized_symbol])
+        if normalized_symbol in snapshots:
+            return snapshots[normalized_symbol]
         raise ValueError(f"No snapshot for {symbol}")
     
     def get_crypto_symbols(self) -> List[str]:
         """Get list of available crypto symbols."""
-        # Note: This endpoint may not exist in v1beta3, return common pairs
-        return ["BTC/USD", "ETH/USD", "LTC/USD", "BCH/USD", "DOGE/USD", "SHIB/USD", "AVAX/USD", "UNI/USD"]
+        data = self._crypto_request("GET", "/meta/symbols")
+        symbols = data.get("symbols", data) if isinstance(data, dict) else data
+        if not isinstance(symbols, list):
+            raise APIError(
+                "Unexpected crypto symbols response",
+                response=data if isinstance(data, dict) else {},
+            )
+
+        return [
+            item.get("symbol", item) if isinstance(item, dict) else item
+            for item in symbols
+        ]
     
     def get_crypto_price(self, symbol: str) -> Decimal:
         """Get current price for a crypto pair."""

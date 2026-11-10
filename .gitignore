@@ -51,6 +51,9 @@ npm-debug.log*
 go/bin/
 go/pkg/
 
+# Rust
+rust/target/
+
 # C#
 bin/
 obj/
