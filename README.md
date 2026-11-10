@@ -110,7 +110,7 @@ package main
 import (
     "fmt"
     "os"
-    "github.com/eneshenderson/alpaca-API/go/alpaca"
+    "github.com/eneshikmetkayim/alpaca-API/go/alpaca"
 )
 
 func main() {
@@ -333,7 +333,7 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICE
 ## 👤 Geliştirici
 
 **Enes Hikmet Kayım**
-- GitHub: [@eneshenderson](https://github.com/eneshenderson)
+- GitHub: [@eneshikmetkayim](https://github.com/eneshikmetkayim)
 
 ## ⚠️ Sorumluluk Reddi
 
