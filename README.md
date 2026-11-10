@@ -194,6 +194,29 @@ System.out.printf("AAPL: $%.2f%n", price);
 Order order = trading.submitOrder(OrderRequest.market("AAPL", "10", "buy"));
 ```
 
+### Rust
+
+```bash
+cd rust
+cargo test
+```
+
+```rust
+use alpaca_api_client::AlpacaClient;
+
+#[tokio::main]
+async fn main() -> Result<(), alpaca_api_client::AlpacaError> {
+    let client = AlpacaClient::new(
+        std::env::var("ALPACA_API_KEY").unwrap(),
+        std::env::var("ALPACA_API_SECRET").unwrap(),
+        true,
+    );
+    let price = client.market_data().get_current_price("AAPL").await?;
+    println!("AAPL: ${price:.2}");
+    Ok(())
+}
+```
+
 
 ## 📚 API Metodları
 
@@ -253,6 +276,9 @@ alpaca-API/
 ├── java/                # Java 11+
 │   ├── src/             # Kaynak kodlar
 │   └── build.gradle
+├── rust/                # Rust 2021+
+│   ├── src/             # Async client ve modeller
+│   └── Cargo.toml
 ├── .env.example         # Credential template
 ├── LICENSE              # MIT Lisansı
 └── README.md
