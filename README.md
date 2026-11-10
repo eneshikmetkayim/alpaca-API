@@ -6,8 +6,9 @@
 [![Go](https://img.shields.io/badge/Go-1.21+-00ADD8.svg)](https://golang.org)
 [![.NET](https://img.shields.io/badge/.NET-8.0+-512BD4.svg)](https://dotnet.microsoft.com)
 [![Java](https://img.shields.io/badge/Java-11+-ED8B00.svg)](https://openjdk.org)
+[![Rust](https://img.shields.io/badge/Rust-2021+-DEA584.svg)](https://www.rust-lang.org/)
 
-Alpaca Markets Trading ve Market Data API'leri için çoklu dil desteğine sahip client kütüphanesi.
+Alpaca Markets Trading ve Market Data API'leri için Python, TypeScript, Go, C#, Java ve Rust desteğine sahip çoklu dil client kütüphanesi.
 
 ## 🎯 Ne İşe Yarar?
 
@@ -25,6 +26,7 @@ Bu kütüphane ile Alpaca üzerinden programatik olarak trading yapabilirsiniz:
 | **Trading API** | Account, Orders, Positions, Watchlists |
 | **Market Data** | Stocks, Crypto, Options (Bars, Trades, Quotes) |
 | **Streaming** | Real-time WebSocket (IEX, SIP, Crypto) |
+| **Rust Client** | Async Rust 2021 client (`reqwest`, `serde`, `tokio`) |
 | **Paper Trading** | Risk-free testing environment |
 
 ## 🚀 Hızlı Başlangıç
@@ -198,8 +200,11 @@ Order order = trading.submitOrder(OrderRequest.market("AAPL", "10", "buy"));
 
 ```bash
 cd rust
+cargo check
 cargo test
 ```
+
+Rust istemcisi şu anda stock snapshot/current price ve crypto symbol metadata endpoint'lerini async olarak destekler:
 
 ```rust
 use alpaca_api_client::AlpacaClient;
@@ -248,6 +253,8 @@ Tüm dillerde aynı metodlar mevcuttur:
 | `getOptionsContracts(...)` | Opsiyon kontratları |
 
 ### Streaming API (Python & TypeScript)
+
+> WebSocket streaming şu anda Python ve TypeScript istemcilerinde kullanılabilir. Rust streaming desteği sonraki kapsam için ayrılmıştır.
 
 | Metod | Açıklama |
 |-------|----------|
